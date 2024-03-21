@@ -1,7 +1,7 @@
 import React from 'react'
 import image1 from './images/RE1Mu3b.png';
 import '../App.css';
-import { useState } from 'react';
+import { useState , useEffect , useRef} from 'react';
 
 function Navbar() {
 
@@ -13,6 +13,36 @@ function Navbar() {
     const [cross, setcross] = useState('menu')
     const [searchopen, setsearchopen] = useState('flex')
     const [SearchBox, setSearchBox] = useState('hidden')
+    const closeButtonRef = useRef(null);
+
+    // useEffect(() => {
+        
+
+    //     return () => {
+    //         document.body.removeEventListener('click', handleClickOutside);
+    //     };
+    // }, [option]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                option === 'block' &&
+                closeButtonRef.current &&
+                !closeButtonRef.current.contains(event.target) // Check if click is outside the close button
+            ) {
+                setoption('hidden');
+                seticon('expand_more');
+            }
+        };
+
+        document.body.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.body.removeEventListener('click', handleClickOutside);
+        };
+    }, [option]);
+
+   
     const handleClick = ()=>
     {
         if (option === 'block') {
@@ -77,7 +107,7 @@ function Navbar() {
         <nav className='hidden lg:flex bg-white py-4  '>
        <img src={image1} className='w-28 mr-10 h-6 ' width={''} alt="" />
         <div className={`${show} justify-between w-full`}>
-             <ul className='flex space-x-10 text-xs  pt-1'>
+             <ul className='flex space-x-10 text-xs  pt-1 cursor-pointer'>
                
                 <li      className='pt-1 hover:border-black hover:border-b-2'>Microsoft 365 </li>
                 <li className='pt-1 hover:border-black hover:border-b-2'>Teams</li>
@@ -88,10 +118,10 @@ function Navbar() {
                 <li className='pt-1 hover:border-black hover:border-b-2'>Support</li>
              </ul>
              <ul className='flex text-xs space-x-5 pt-1'>
-                <li className="flex space-x-2 pt-1 "> <span className='hover:border-black hover:border-b-2'> All Microsoft</span> <span onClick={handleClick} className="material-symbols-outlined mx-2">{icon}</span>  </li>
-                <li className="flex space-x-2 pt-1 " onClick={handleSearch}><span className='hover:border-black hover:border-b-2' onClick={handleSearch}>Search</span> <span className="material-symbols-outlined mx-2 ">search</span>  </li>
-                <li className="flex space-x-2 pt-1 "><span className='hover:border-black hover:border-b-2'>Cart</span> <span className="material-symbols-outlined mx-2 ">shopping_cart</span>  </li>
-                <li className="flex space-x-2 pt-1 "><span className='hover:border-black hover:border-b-2'>Sign in</span> <span className="material-symbols-outlined mx-2 ">person_add</span>  </li>
+                <li className="flex space-x-2 pt-1 cursor-pointer"> <span className='hover:border-black hover:border-b-2 '> All Microsoft</span> <span onClick={handleClick} ref={closeButtonRef} className="material-symbols-outlined mx-2">{icon}</span>  </li>
+                <li className="flex space-x-2 pt-1 cursor-pointer" onClick={handleSearch}><span className='hover:border-black hover:border-b-2' onClick={handleSearch}>Search</span> <span className="material-symbols-outlined mx-2 ">search</span>  </li>
+                <li className="flex space-x-2 pt-1 cursor-pointer"><span className='hover:border-black hover:border-b-2'>Cart</span> <span className="material-symbols-outlined mx-2 ">shopping_cart</span>  </li>
+                <li className="flex space-x-2 pt-1 cursor-pointer"><span className='hover:border-black hover:border-b-2'>Sign in</span> <span className="material-symbols-outlined mx-2 ">person_add</span>  </li>
              </ul>
 
 
